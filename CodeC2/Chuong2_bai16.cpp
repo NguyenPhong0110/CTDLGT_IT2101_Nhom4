@@ -57,7 +57,7 @@ int main() {
 
 	int choice, kt, x;
 	system("cls");
-	cout << "=== Bai tap 11 - Chuong 2 - QUEUE voi DSLK don ===\n";
+	cout << "=== Bai tap 16 - Chuong 2 ===\n";
 	cout << "1. Khoi tao QUEUE rong\n";
 	cout << "2. Kiem tra QUEUE co rong hay khong?\n";
 	cout << "3. Them phan tu vao QUEUE\n";
