@@ -106,7 +106,7 @@ bool DelFirstList()
         return false;
 
     Node* p = first;
-    if (last == first)//list có 1 node
+    if (last == first)//list cÃ³ 1 node
     {
         first = last = NULL;
         delete p;
@@ -124,7 +124,7 @@ bool DelLastList()
         return false;
 
     Node* p = last;
-    if (last == first)//list có 1 node
+    if (last == first)//list cÃ³ 1 node
     {
         first = last = NULL;
         delete p;
@@ -140,7 +140,7 @@ int main()
 {
     int chon, X;
     system("cls");
-    cout << "===========BAI TAP 12 _ CHUONG 5 ==========" << endl;
+    cout << "===========BAI TAP 13 _ CHUONG 5 ==========" << endl;
     cout << "12.1 Khai bao cau truc danh sach" << endl;
     cout << "12.2 Khoi tao danh sach rong" << endl;
     cout << "12.3 Xuat cac phan tu trong danh sach" << endl;
