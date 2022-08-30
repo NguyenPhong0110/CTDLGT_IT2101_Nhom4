@@ -91,7 +91,7 @@ int main()
     struct soHang* list = NULL, * dlist = NULL;
     struct soHang* head = NULL;
     system("cls");
-    cout << "===========BAI TAP 14 _ CHUONG 2==========" << endl;
+    cout << "===========BAI TAP 15 _ CHUONG 2==========" << endl;
     cout << "14.1 Khai bao cau truc danh sach" << endl;
     cout << "14.2 Nhap vao da thuc" << endl;
     cout << "14.3 Xuat da thuc" << endl;
