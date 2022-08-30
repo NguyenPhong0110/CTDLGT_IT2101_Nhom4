@@ -67,46 +67,12 @@ int T1[MAX];
 int T2[MAX];
 int wT[MAX];
 int nT = 0; // so phan tap T
-
-void taoE()
+int TonTai(int d, int D[], int nD)
 {
 	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			if (a[i][j] != 0)
-			{
-				E1[nE] = i;
-				E2[nE] = j;
-				wE[nE] = a[i][j];
-				a[i][j] = 0;
-				a[j][i] = 0;
-				nE++;
-			}
-}
-
-int TonTai(int E, int T[], int nT)
-{
-	for (int i = 0; i < nT; i++)
-		if (E == T[i])
+		if (D[i] == d)
 			return 1;
 	return 0;
-}
-
-void Swap(int& a, int& b) {
-	int c = a;
-	a = b;
-	b = c;
-}
-
-void SapXepE()
-{
-	for (int i = 0; i < nE - 1; i++)
-		for (int j = i + 1; j < nE; j++)
-			if (wE[i] > wE[j])
-			{
-				swap(wE[i], wE[j]);
-				swap(E1[i], E1[j]);
-				swap(E2[i], E2[j]);
-			}
 }
 void XoaViTriE(int i)
 {
@@ -169,6 +135,47 @@ void Prim(int s)
 		u = d2;
 	}
 }
+void taoE()
+{
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			if (a[i][j] != 0)
+			{
+				E1[nE] = i;
+				E2[nE] = j;
+				wE[nE] = a[i][j];
+				a[i][j] = 0;
+				a[j][i] = 0;
+				nE++;
+			}
+}
+
+int TonTai(int E, int T[], int nT)
+{
+	for (int i = 0; i < nT; i++)
+		if (E == T[i])
+			return 1;
+	return 0;
+}
+
+void Swap(int& a, int& b) {
+	int c = a;
+	a = b;
+	b = c;
+}
+
+void SapXepE()
+{
+	for (int i = 0; i < nE - 1; i++)
+		for (int j = i + 1; j < nE; j++)
+			if (wE[i] > wE[j])
+			{
+				swap(wE[i], wE[j]);
+				swap(E1[i], E1[j]);
+				swap(E2[i], E2[j]);
+			}
+}
+
 void kruskal()
 {
 	for (int i = 0; i < nE; i++)
