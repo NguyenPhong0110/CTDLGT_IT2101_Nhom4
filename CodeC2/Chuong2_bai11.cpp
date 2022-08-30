@@ -1,6 +1,5 @@
 ﻿#include<iostream>
 using namespace std;
-//11.1. Khai báo cấu trúc queue.
 struct Node
 {
 	int info;
