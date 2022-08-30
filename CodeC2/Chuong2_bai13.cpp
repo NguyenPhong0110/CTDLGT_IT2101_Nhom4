@@ -1,194 +1,166 @@
-#include <iostream>
-
+﻿#include <iostream>
+#include <string>
 using namespace std;
-
-//============================================
-struct Node
+struct daThuc
 {
-    int info;
-    Node* pre, * next;
+    int soMu;
+    float* heSo;
+
 };
-Node* first, * last;
-//============================================
-void Init()
-{
-    first = last = NULL;
-}
-//============================================
-void OutputList_Nguoc()
-{
-    for (Node* i = last; i != NULL; i = i->pre)
-    {
-        cout << i->info << "\t";
-    }
-}
-//============================================
-void OutputList_Thuan()
-{
-    for (Node* i = first; i != NULL; i = i->next)
-    {
-        cout << i->info << "\t";
-    }
-}
-//============================================
-void InsertFirstList(int X)
-{
-    Node* p = new Node;
-    p->info = X;
-    p->next = p->pre = NULL;
-
-    if (first == NULL) // list r?ng
-    {
-        last = first = p;
-    }
-    else
-    {
-        p->next = first;
-        first->pre = p;
-        first = p;
-    }
-}
-//============================================
-void InsertLastList(int X)
-{
-    Node* p = new Node;
-    p->info = X;
-    p->next = p->pre = NULL;
-
-    if (first == NULL) // list rong
-    {
-        last = first = p;
-    }
-    else
-    {
-        last->next = p;
-        p->pre = last;
-        last = p;
-    }
-}
-//============================================
-void CreataList()
-{
-    int X;
+void NhapDT(daThuc* d) {
     do {
-        cout << "Nhap danh sach( 0 la dung): ";
-        cin >> X;
-        if (X != 0)
-        {
-            //InsertFirstList(X);
-            InsertLastList(X);
+        cout << "\nNhap vao so bac cua da thuc ";
+        cin >> d->soMu;
+        if (d->soMu < 1) {
+            cout << "\nSo bac cua da thuc phai >=1. Xin kiem tra lai";
         }
-    } while (X != 0);
+    } while (d->soMu < 1);
+    d->heSo = new float[d->soMu + 1];
+    for (int i = d->soMu; i > 0; i--) {
+        cout << "\nHe so bac " << i << " la: ";
+        cin >> d->heSo[i];
+    }
+    cout << "\nHe so tu do ";
+    cin >> d->heSo[0];
 }
-//============================================
-void swap(int& x, int& y)
-{
-    int temp = x;
-    x = y;
-    y = temp;
+void XuatDaThuc(daThuc* d) {
+    for (int i = d->soMu; i > 0; i--) {
+        cout << d->heSo[i] << "x^" << i << " + ";
+    }
+    cout << d->heSo[0] << endl;
 }
-//============================================
-void InterchangeSort_ASC()
+daThuc* Tong2DaThuc(daThuc* x, daThuc* y)
 {
-    for (Node* i = first; i->next != NULL; i = i->next)
+    int Max = x->soMu > y->soMu ? x->soMu : y->soMu;
+    int Min = x->soMu < y->soMu ? x->soMu : y->soMu;
+    daThuc* kq = new daThuc;
+    kq->soMu = Max;
+    kq->heSo = new float[kq->soMu + 1];
+    for (int i = 0; i <= Min; ++i)
     {
-        for (Node* j = i->next; j != NULL; j = j->next)
+        kq->heSo[i] = x->heSo[i] + y->heSo[i];
+    }
+    if (Max == x->soMu)
+    {
+        for (int i = Min + 1; i <= Max; ++i)
         {
-            if (i->info > j->info)
-                swap(i->info, j->info);
+            kq->heSo[i] = x->heSo[i];
         }
     }
-}
-//============================================
-bool DelFirstList()
-{
-    if (first == NULL)
-        return false;
-
-    Node* p = first;
-    if (last == first)//list có 1 node
+    else
     {
-        first = last = NULL;
-        delete p;
-        return true;
+        for (int i = Min + 1; i <= Max; ++i)
+        {
+            kq->heSo[i] = y->heSo[i];
+        }
     }
-    first = first->next;
-    first->pre = NULL;
-    delete p;
-    return true;
+    return kq;
 }
-//============================================
-bool DelLastList()
+daThuc* Hieu2DaThuc(daThuc* x, daThuc* y)
 {
-    if (first == NULL) //list rong
-        return false;
-
-    Node* p = last;
-    if (last == first)//list có 1 node
+    int Max = x->soMu > y->soMu ? x->soMu : y->soMu;
+    int Min = x->soMu < y->soMu ? x->soMu : y->soMu;
+    daThuc* kq = new daThuc;
+    kq->soMu = Max;
+    kq->heSo = new float[kq->soMu + 1];
+    for (int i = 0; i <= Min; ++i)
     {
-        first = last = NULL;
-        delete p;
-        return true;
+        kq->heSo[i] = x->heSo[i] - y->heSo[i];
     }
-    last = last->pre;
-    last->next = NULL;
-    delete p;
-    return true;
+    if (Max == x->soMu)
+    {
+        for (int i = Min + 1; i <= Max; ++i)
+        {
+            kq->heSo[i] = x->heSo[i];
+        }
+    }
+    else
+    {
+        for (int i = Min + 1; i <= Max; ++i)
+        {
+            kq->heSo[i] = 0 - y->heSo[i];
+        }
+    }
+    return kq;
 }
-//============================================
+daThuc* Tich2DaThuc(daThuc* a, daThuc* b)
+{
+    daThuc* ketqua = new daThuc;
+
+    // xét bậc đa thức kết quả
+    ketqua->soMu = a->soMu + b->soMu;
+    ketqua->heSo = new float[ketqua->soMu + 1];
+    // Xét hệ số đa thức kết quả
+    for (int i = 0; i <= a->soMu; i++)
+    {
+        for (int j = 0; j <= b->soMu; j++)
+        {
+            ketqua->heSo[i + j] = a->heSo[i] * b->heSo[j];
+        }
+    }
+    return ketqua;
+}
+daThuc* Thuong2DaThuc(daThuc* x, daThuc* y) {
+    daThuc* ketqua = new daThuc;
+    daThuc* chia = x;
+    daThuc* biChia = y;
+    daThuc* temp = new daThuc;
+
+    int a = ketqua->soMu = x->soMu - y->soMu;
+    ketqua->heSo = new float[ketqua->soMu + 1];
+    int b = 0;
+    while (a > 0)
+    {
+        temp->soMu = x->soMu - y->soMu;
+        temp->heSo = new float[temp->soMu + 1];
+        temp->heSo[temp->soMu] = chia->heSo[b] / biChia->heSo[b];
+        biChia = Hieu2DaThuc(biChia, Tich2DaThuc(temp, chia));
+    }
+
+}
 int main()
 {
-    int chon, X;
-    system("cls");
-    cout << "===========BAI TAP 13 _ CHUONG 5 ==========" << endl;
-    cout << "12.1 Khai bao cau truc danh sach" << endl;
-    cout << "12.2 Khoi tao danh sach rong" << endl;
-    cout << "12.3 Xuat cac phan tu trong danh sach" << endl;
-    cout << "12.4 Them phan tu vao dau danh sach" << endl;
-    cout << "12.5 Them phan tu vao cuoi danh sach" << endl;
-    cout << "12.6 Xoa phan tu dau danh sach" << endl;
-    cout << "12.7 Xoa phan tu cuoi danh sach" << endl;
-
-    cout << "0.Thoat" << endl;
-    do
-    {
-        cout << "\nMoi ban chon: ";
-        cin >> chon;
-        switch (chon)
+    daThuc* d = new daThuc;
+    daThuc* e = new daThuc;
+    int chonNhap = 1, chonTinh = 1;
+    while (chonNhap != 0) {
+        NhapDT(d);
+        NhapDT(e);
+        while (chonTinh != 0)
         {
-        case 1:
-            cout << "Khai bao cau truc danh sach thanh cong!" << endl;
-            break;
-        case 2:
-            CreataList();
-            break;
-        case 3:
-            OutputList_Thuan();
-            break;
-        case 4:
-            cout << "Nhap phan tu muon them vao dau danh sach: ";
-            cin >> X;
-            InsertFirstList(X);
-            OutputList_Thuan();
-            break;
-        case 5:
-            cout << "Nhap phan tu muon them vao cuoi danh sach: ";
-            cin >> X;
-            InsertLastList(X);
-            OutputList_Thuan();
-            break;
-        case 6:
-            DelFirstList();
-            OutputList_Thuan();
-            break;
-        case 7:
-            DelLastList();
-            OutputList_Thuan();
-            break;
-        default: chon = 0;
+            cout << "\n1.Tinh tong 2 da thuc ";
+            cout << "\n2.Tinh hieu 2 da thuc ";
+            cout << "\n3.Tinh tich 2 da thuc ";
+            cout << "\n4.Tinh thuong 2 da thuc ";
+            cout << "\n5.Nhap 2 da thuc khac ";
+            cout << "\n0.Thoat ";
+            cin >> chonTinh;
+            switch (chonTinh)
+            {
+            case 1:
+                XuatDaThuc(Tong2DaThuc(d, e));
+                break;
+            case 2:
+                XuatDaThuc(Hieu2DaThuc(d, e));
+                break;
+            case 3:
+                XuatDaThuc(Tich2DaThuc(d, e));
+                break;
+            case 5:
+                chonTinh = 0;
+                break;
+            case 0:
+                chonNhap = 0;
+                chonTinh = 0;
+                break;
+            default:
+                break;
+            }
         }
-    } while (chon != 0);
-    system("pause");
 
+    }
+    delete d;
+    delete e;
+    system("pause");
     return 0;
 }
