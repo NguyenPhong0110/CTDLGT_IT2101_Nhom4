@@ -1,82 +1,75 @@
-#include <iostream>
-#include <stdio.h>
-#include <iomanip>
+﻿#include <iostream>
 #include <fstream>
-#include <list>
-#define MAX 20
-
+#include <iomanip>
+#include <stdio.h>
 using namespace std;
-
-//Khai bao mang hai chieu
+# define MAX 20
 int a[MAX][MAX];
 int n;
 char vertex[MAX];
-
-void InitGraph() {
+void initGraph()
+{
 	n = 0;
 }
-
-//Nhap MT ke cua do thi
-void inputGraph() {
-	cout << "Nhap so dinh do thi n: ";
+void inputGraph()
+{
+	cout << "Nhap vao so dinh cua do thi: ";
 	cin >> n;
-	for (int i = 0; i < n; i++) {
-		cout << "Nhap ten dinh: ";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "NHap ten dinh: ";
 		cin >> vertex[i];
-		cout << " nhap vao dong thu " << i + 1 << ": ";
-		for (int j = 0; j < n; j++) {
+		cout << "Nhap vao dong thu " << i + 1 << ": ";
+		for (int j = 0; j < n; j++)
 			cin >> a[i][j];
-		}
 	}
 }
-
-//Nhap Graph tu file
-void inputGraphFromText() {
+void inputGraphFromText()
+{
 	string line;
-	ifstream myfile("mtts1.txt");
-	if (myfile.is_open()) {
-		myfile >> n;
+	ifstream fi("mtts2.txt");
+	if (fi.is_open())
+	{
+		fi >> n;
 		for (int i = 0; i < n; i++)
-			myfile >> vertex[i];
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				myfile >> a[i][j];
-			}
+			fi >> vertex[i];
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+				fi >> a[i][j];
 		}
 	}
 }
-
-//Xuat ma tran ke cua do thi
-void outputGraph() {
+void outputGraph()
+{
 	cout << setw(6) << left;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++)
+	{
 		for (int j = 0; j < n; j++)
 			cout << a[i][j] << setw(6) << left;
 		cout << endl;
 	}
 }
-
-//Khai bao tap E
 int E1[MAX];
 int E2[MAX];
 int wE[MAX];
-int nE = 0; // so phan tu tap E
+int nE = 0;
 
-// khai bao Tap T
 int T1[MAX];
 int T2[MAX];
 int wT[MAX];
-int nT = 0; // so phan tap T
+int nT = 0;
+
 int TonTai(int d, int D[], int nD)
 {
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < nD; i++)
 		if (D[i] == d)
 			return 1;
 	return 0;
 }
 void XoaViTriE(int i)
 {
-	for (int j = 0; j < nE; j++)
+	for (int j = i; j < nE; j++)
 	{
 		E1[j] = E1[j + 1];
 		E2[j] = E2[j + 1];
@@ -84,18 +77,17 @@ void XoaViTriE(int i)
 	}
 	nE--;
 }
-int XoaCanhE(int u, int v)
+
+void XoaCanhE(int u, int v)
 {
 	for (int i = 0; i < nE; i++)
-	{
 		if (E1[i] == u && E2[i] == v)
 		{
 			XoaViTriE(i);
 			break;
 		}
-	}
 }
-void Prim(int s)
+void prim(int s) // s là đỉnh bắt đầu
 {
 	int u = s, min, i, d1, d2;
 	while (nT < n - 1)
@@ -109,15 +101,13 @@ void Prim(int s)
 					wE[nE] = a[u][v];
 					nE++;
 				}
-		for (int i = 0; i < nE; i++)
+		for (i = 0; i < nE; i++)
 			if (TonTai(E2[i], T2, nT) == 0)
 			{
-				min = wE[i];
-				d1 = E1[i];
-				d2 = E2[i];
-				break;
+				min = wE[i]; d1 = E1[i];
+				d2 = E2[i]; break;
 			}
-		for (; i < nE; i++)
+		for (int i = 0; i < nE; i++)
 			if (TonTai(E2[i], T2, nT) == 0)
 				if (min > wE[i])
 				{
@@ -135,6 +125,7 @@ void Prim(int s)
 		u = d2;
 	}
 }
+
 void taoE()
 {
 	for (int i = 0; i < n; i++)
@@ -149,21 +140,11 @@ void taoE()
 				nE++;
 			}
 }
-
-int TonTai(int E, int T[], int nT)
-{
-	for (int i = 0; i < nT; i++)
-		if (E == T[i])
-			return 1;
-	return 0;
-}
-
 void Swap(int& a, int& b) {
 	int c = a;
 	a = b;
 	b = c;
 }
-
 void SapXepE()
 {
 	for (int i = 0; i < nE - 1; i++)
@@ -175,7 +156,6 @@ void SapXepE()
 				swap(E2[i], E2[j]);
 			}
 }
-
 void kruskal()
 {
 	for (int i = 0; i < nE; i++)
@@ -193,38 +173,8 @@ void kruskal()
 	}
 }
 
-//Xuat ten dinh
-void output(bool VertexName)
-{
-	int tong = 0;
-	for (int i = 0; i < nT; i++)
-	{
-		if (VertexName)
-			cout << endl << "(" << vertex[T1[i]] << "," << vertex[T2[i]] << ") = " << wT[i];
-		else
-			cout << endl << "(" << T1[i] << "," << T2[i] << ") = " << wT[i];
-		tong += wT[i];
-	}
-	cout << "\n  Tong = " << tong;
-}
-
-void outputE(bool VertexName)
-{
-	int tong = 0;
-	for (int i = 0; i < nE; i++)
-	{
-		if (VertexName)
-			cout << endl << "(" << vertex[E1[i]] << "," << vertex[E2[i]] << ") = " << wE[i];
-		else
-			cout << endl << "(" << E1[i] << "," << E2[i] << ") = " << wE[i];
-		tong += wE[i];
-	}
-	cout << "\n  Tong = " << tong;
-}
-
-//lien thong
 int ConnectedComponents() {
-	int visited[MAX];
+	int visited[MAX] = { 0 };
 	int nV = 0;
 	int i = 0, j = 0;
 	int nC = 0;
@@ -254,48 +204,74 @@ int ConnectedComponents() {
 	return nC;
 }
 
-int main() {
+void output(bool VertexName)
+{
+	int tong = 0;
+	for (int i = 0; i < nT; i++)
+	{
+		if (VertexName)
+			cout << endl << "(" << vertex[T1[i]] << "," << vertex[T2[i]] << ") = " << wT[i];
+		else
+			cout << endl << "( " << T1[i] << "," << T2[i] << ") =" << wT[i];
+		tong += wT[i];
+	}
+	cout << "\n  Tong = " << tong << endl;
+}
+void outputE(bool VertexName)
+{
+	int tong = 0;
+	for (int i = 0; i < nE; i++)
+	{
+		if (VertexName)
+			cout << endl << "(" << vertex[E1[i]] << "," << vertex[E2[i]] << ") = " << wE[i];
+		else
+			cout << endl << "(" << E1[i] << "," << E2[i] << ") = " << wE[i];
+		tong += wE[i];
+	}
+	cout << "\n  Tong = " << tong;
+}
+int main()
+{
 	int choice, x, i;
 	system("cls");
-	cout << " -------- BAI TAP 5 + 6, CHUONG 6, TIM KIEM CAY KHUNG TOI THIEU, KRUSKAL -------- " << endl;
-	cout << "1. Khoi tao MA TRAN KE rong" << endl;
-	cout << "2. Nhap MA TRAN KE tu file text" << endl;
-	cout << "3. Nhap MA TRAN KE " << endl;
-	cout << "4. Xuat MA TRAN KE " << endl;
-	cout << "5.Tim CAY KHUNG TOI THIEU bang Prim" << endl;
-	cout << "6. Tim CAY KHUNG TOI THIEU bang KRUSKAL " << endl;
-	cout << "7. In ra tap E:" << endl;
+	cout << "------------------ Bai tap 7, Chuong 6, Tim kiem cay khung toi thieu ----------\n";
+	cout << "1. Khoi tao MTK rong \n";
+	cout << "2. Nhap MTK tu file text\n";
+	cout << "3. Nhap MTK\n";
+	cout << "4. Xuat MTK\n";
+	cout << "5. In ra tap E:" << endl;
+	cout << "6. Tim CAY KHUNG TOI THIEU bang PRIM\n";
+	cout << "7. Tim CAY KHUNG TOI THIEU bang KRUSKAL " << endl;
 	cout << "8. Connected Graph - Do thi lien thong" << endl;
-	cout << "9. Thoat" << endl;
+	cout << "9. Thoat\n";
 	do {
-		cout << "\nVui long chon so de thuc hien: "; cin >> choice;
+		cout << "Vui long nhap lua chon cua ban: ";
+		cin >> choice;
 		switch (choice)
 		{
 		case 1:
-			InitGraph();
-			cout << "Ban vua khoi tao MA TRAN KE rong thanh cong!\n";
+			initGraph();
+			cout << "Ban vua khoi tao MTK rong thanh cong !!\n";
 			break;
 		case 2:
 			inputGraphFromText();
-			cout << "Ban vua nhap MA TRAN KE tu file: \n";
+			cout << "Ban vua nhap MTK tu file !!\n";
 			outputGraph();
 			break;
 		case 3:
 			inputGraph();
-			cout << "Ban vua nhap MA TRAN KE tu file: \n";
-			outputGraph();
 			break;
 		case 4:
 			outputGraph();
 			break;
-		case 5:
-			cout << "vui long nhap dinh xuat phat: ";
+		case 6:
+			cout << "Vui long nhap dinh xuat phat: ";
 			cin >> x;
-			Prim(x);
-			cout << "Cau khung toi thieu voi Prim\n";
+			prim(x);
+			cout << "Cay khung toi thieu voi PRIM: " << endl;
 			output(true);
 			break;
-		case 6:
+		case 7:
 			nT = 0;
 			taoE();
 			SapXepE();
@@ -303,7 +279,7 @@ int main() {
 			cout << "Cay khung toi thieu voi KRUSKAL: " << endl;
 			output(true);
 			break;
-		case 7:
+		case 5:
 			outputE(true);
 			break;
 		case 8:
@@ -311,7 +287,7 @@ int main() {
 			cout << "Do thi co so tplt = " << i << endl;
 			break;
 		case 9:
-			cout << "Goodbye ..... !" << endl;
+			cout << "Good bye\n";
 			break;
 		default:
 			break;
